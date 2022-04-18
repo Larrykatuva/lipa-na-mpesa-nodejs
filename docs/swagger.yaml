@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+  title: Celica Gateway - Payments
+  summary: API endpoints for Celica Gateway Payments
+  description: Please select the server below depending on whether you are using Heroku or running the application locally
+
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000/mpesa
+
+components:
+  schemas:
+    Initiate:
+      type: object
+      properties:
+        amount: 
+          type: integer
+          example: 20
+        partyA:
+          type: string
+          example: 0720460519
+        partyB:
+          type: string
+          example: 0720460519
+        transactionsDesc:
+          type: string
+          example: Lipa bima
+
+paths:
+  /get_access_token:
+    get:
+      summary: Request access token
+      description: Access token get request
+      tags:
+        - Access Token
+      responses:
+        200:
+          description: Access token successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: 9VySzPBKVbSZUgLpT2rzXAPsyjYL
+                  expires_in:
+                    type: integer
+                    example: 3599
+        400:
+          description: Access token request failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestId:
+                    type: string
+                    example: 47173-94739215-1
+                  errorCode:
+                    type: string
+                    example: 400.008.01
+                  errorMessage:
+                    type: string
+                    example: Invalid Authentication passed
+  /lipa_na_mpesa:
+    post:
+      summary: Initiate lipa na mpesa transaction
+      description: Initiate mpesa payment
+      tags:
+        - Lipa na Mpesa
+      requestBody:
+        required: true
+        content:
+          application/json:
+          schema:
+            type: object
+            $ref: "#components/schemas/Initiate"
+      responses:
+        200:
+          description: Access token successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: 9VySzPBKVbSZUgLpT2rzXAPsyjYL
+                  expires_in:
+                    type: integer
+                    example: 3599
+
+
+
